@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  ubuntu:
+    name: ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: clippy, rustfmt
+      - name: tests
+        run: cargo test -- --include-ignored
+      - name: clippy
+        run: cargo clippy -- -D warnings
+      - name: rustfmt check
+        run: cargo fmt -- --check
+      - name: minimal-versions test
+        run: |
+          cargo install cargo-hack cargo-minimal-versions
+          cargo minimal-versions test
+
+  windows:
+    name: windows-latest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: clippy, rustfmt
+      - name: tests
+        run: cargo test -- --include-ignored
+      - name: clippy
+        run: cargo clippy -- -D warnings
+      - name: rustfmt check
+        run: cargo fmt -- --check
+      - name: minimal-versions test
+        run: |
+          cargo install cargo-hack cargo-minimal-versions
+          cargo minimal-versions test
+
+  macos:
+    name: macos-latest
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: clippy, rustfmt
+      - name: tests
+        run: cargo test -- --include-ignored
+      - name: clippy
+        run: cargo clippy -- -D warnings
+      - name: rustfmt check
+        run: cargo fmt -- --check
+      - name: minimal-versions test
+        run: |
+          cargo install cargo-hack cargo-minimal-versions
+          cargo minimal-versions test
