@@ -4,3 +4,4 @@ version = "0.2.3-beta"
 edition = "2024"
 
 [dependencies]
+rug = "1.27.0"
