@@ -1,0 +1,6 @@
+[package]
+name = "rcgal"
+version = "0.2.3-beta"
+edition = "2024"
+
+[dependencies]
