@@ -1,6 +1,12 @@
 [package]
 name = "rcgal"
-version = "0.2.3-beta"
+version = "0.2.3-dev"
 edition = "2024"
+authors = ["Ondřej Toman <ondra007.tom@seznam.cz>"]
+description = "Rust Computational Geometry Algorithms Library"
+categories = ["algorithms", "mathematics", "science", "graphics"]
+keywords = ["math", "geometry", "2d", "3d"]
+repository = "https://github.com/kitt159/rcgal"
+documentation = "https://docs.rs/rcgal"
 
 [dependencies]

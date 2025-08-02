@@ -4,4 +4,4 @@ version = 4
 
 [[package]]
 name = "rcgal"
-version = "0.2.3-beta"
+version = "0.2.3-dev"
