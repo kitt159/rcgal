@@ -8,5 +8,6 @@ categories = ["algorithms", "mathematics", "science", "graphics"]
 keywords = ["math", "geometry", "2d", "3d"]
 repository = "https://github.com/kitt159/rcgal"
 documentation = "https://docs.rs/rcgal"
+license = "LGPL-2.1+"
 
 [dependencies]
