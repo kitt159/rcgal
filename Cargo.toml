@@ -10,4 +10,5 @@ repository = "https://github.com/kitt159/rcgal"
 documentation = "https://docs.rs/rcgal"
 license = "MIT OR Apache-2.0"
 
-[dependencies]
+[dev-dependencies]
+approx = "0.5.1"
