@@ -23,9 +23,7 @@ impl Point {
 
     /// Returns the distance between two points.
     pub fn dist(&self, other: &Point) -> f64 {
-        let dx = self.x - other.x;
-        let dy = self.y - other.y;
-        dx.hypot(dy)
+        (*self - *other).length()
     }
 }
 
