@@ -12,3 +12,9 @@ license = "LGPL-2.1+"
 
 [dev-dependencies]
 approx = "0.5.1"
+
+[lints.rust]
+missing_docs = "warn"
+
+[lints.clippy]
+use_self = "warn"
