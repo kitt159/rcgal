@@ -3,6 +3,7 @@
 //! # RCGAL
 
 mod point;
+mod point_vector_ops;
 mod vector;
 
 pub use point::Point;
