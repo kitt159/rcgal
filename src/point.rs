@@ -1,5 +1,3 @@
-type NaPoint2 = nalgebra::Point2<f64>;
-
 /// Structure representing a 2D point.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Point {
@@ -9,9 +7,7 @@ pub struct Point {
 impl Point {
     /// Creates a new 2D point from x and y coordinates.
     pub fn new(x: f64, y: f64) -> Self {
-        Self {
-            inner: NaPoint2::new(x, y),
-        }
+        NaPoint2::new(x, y).into()
     }
 
     /// Returns the x coordinate.
@@ -28,6 +24,20 @@ impl Point {
     pub fn dist(&self, other: &Self) -> f64 {
         let diff = self.inner - other.inner;
         diff.x.hypot(diff.y)
+    }
+}
+
+pub(crate) type NaPoint2 = nalgebra::Point2<f64>;
+
+impl From<NaPoint2> for Point {
+    fn from(p: NaPoint2) -> Self {
+        Self { inner: p }
+    }
+}
+
+impl From<Point> for NaPoint2 {
+    fn from(p: Point) -> Self {
+        p.inner
     }
 }
 
