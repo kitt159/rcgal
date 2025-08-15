@@ -1,5 +1,5 @@
 /// Structure representing a 2D vector.
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector {
     x: f64,
     y: f64,

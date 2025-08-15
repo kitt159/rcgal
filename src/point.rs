@@ -1,5 +1,5 @@
 /// Structure representing a 2D point.
-#[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Point {
     x: f64,
     y: f64,
