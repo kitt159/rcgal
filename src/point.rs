@@ -23,7 +23,7 @@ impl Point {
 
     /// Returns the distance between two points.
     pub fn dist(&self, other: &Self) -> f64 {
-        (*self - *other).length()
+        (*self - *other).norm()
     }
 }
 

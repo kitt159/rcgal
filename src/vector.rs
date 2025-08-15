@@ -22,7 +22,7 @@ impl Vector {
     }
 
     /// Returns the length of the vector.
-    pub fn length(&self) -> f64 {
+    pub fn norm(&self) -> f64 {
         self.x.hypot(self.y)
     }
 }
@@ -43,8 +43,8 @@ mod tests {
     }
 
     #[test]
-    fn vector_2d_length() {
+    fn vector_2d_norm() {
         let p = Vector::new(3.0, 4.0);
-        rel_eq!(p.length(), 5.0);
+        rel_eq!(p.norm(), 5.0);
     }
 }
