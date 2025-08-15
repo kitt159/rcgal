@@ -7,8 +7,8 @@ pub struct Point {
 
 impl Point {
     /// Creates a new 2D point from x and y coordinates.
-    pub fn new(x: f64, y: f64) -> Point {
-        Point { x, y }
+    pub fn new(x: f64, y: f64) -> Self {
+        Self { x, y }
     }
 
     /// Returns the x coordinate.
@@ -22,7 +22,7 @@ impl Point {
     }
 
     /// Returns the distance between two points.
-    pub fn dist(&self, other: &Point) -> f64 {
+    pub fn dist(&self, other: &Self) -> f64 {
         (*self - *other).length()
     }
 }

@@ -10,10 +10,10 @@ impl Sub for Point {
 }
 
 impl Add<Vector> for Point {
-    type Output = Point;
+    type Output = Self;
 
     fn add(self, rhs: Vector) -> Self::Output {
-        Point::new(self.x() + rhs.x(), self.y() + rhs.y())
+        Self::new(self.x() + rhs.x(), self.y() + rhs.y())
     }
 }
 

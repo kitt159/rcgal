@@ -7,8 +7,8 @@ pub struct Vector {
 
 impl Vector {
     /// Creates a new 2D vector from x and y coordinates.
-    pub fn new(x: f64, y: f64) -> Vector {
-        Vector { x, y }
+    pub fn new(x: f64, y: f64) -> Self {
+        Self { x, y }
     }
 
     /// Returns the x coordinate.
