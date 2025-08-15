@@ -1,5 +1,3 @@
-type NaVec2 = nalgebra::Vector2<f64>;
-
 /// Structure representing a 2D vector.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector {
@@ -9,9 +7,7 @@ pub struct Vector {
 impl Vector {
     /// Creates a new 2D vector from x and y coordinates.
     pub fn new(x: f64, y: f64) -> Self {
-        Self {
-            inner: NaVec2::new(x, y),
-        }
+        NaVec2::new(x, y).into()
     }
 
     /// Returns the x coordinate.
@@ -27,6 +23,20 @@ impl Vector {
     /// Returns the length of the vector.
     pub fn norm(&self) -> f64 {
         self.inner.x.hypot(self.inner.y)
+    }
+}
+
+pub(crate) type NaVec2 = nalgebra::Vector2<f64>;
+
+impl From<NaVec2> for Vector {
+    fn from(v: NaVec2) -> Self {
+        Self { inner: v }
+    }
+}
+
+impl From<Vector> for NaVec2 {
+    fn from(v: Vector) -> Self {
+        v.inner
     }
 }
 
