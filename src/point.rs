@@ -66,19 +66,18 @@ mod tests {
 
     #[test]
     fn point_2d_invalid_arguments() {
-        let e = RcgalError::NotFiniteInput;
-        let p = Point::new(f64::NAN, 0.0);
-        assert_eq!(p.unwrap_err(), e);
-        let p = Point::new(f64::INFINITY, 0.0);
-        assert_eq!(p.unwrap_err(), e);
-        let p = Point::new(f64::NEG_INFINITY, 0.0);
-        assert_eq!(p.unwrap_err(), e);
-        let p = Point::new(0.0, f64::NAN);
-        assert_eq!(p.unwrap_err(), e);
-        let p = Point::new(0.0, f64::INFINITY);
-        assert_eq!(p.unwrap_err(), e);
-        let p = Point::new(0.0, f64::NEG_INFINITY);
-        assert_eq!(p.unwrap_err(), e);
+        let e = Point::new(f64::NAN, 0.0).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::new(f64::INFINITY, 0.0).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::new(f64::NEG_INFINITY, 0.0).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::new(0.0, f64::NAN).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::new(0.0, f64::INFINITY).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::new(0.0, f64::NEG_INFINITY).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
     }
 
     #[test]
@@ -93,18 +92,18 @@ mod tests {
 
     #[test]
     fn from_nalgebra_invalid_arguments() {
-        let p = Point::try_from(NaPoint2::new(f64::NAN, 0.0));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Point::try_from(NaPoint2::new(f64::INFINITY, 0.0));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Point::try_from(NaPoint2::new(f64::NEG_INFINITY, 0.0));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Point::try_from(NaPoint2::new(0.0, f64::NAN));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Point::try_from(NaPoint2::new(0.0, f64::INFINITY));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Point::try_from(NaPoint2::new(0.0, f64::NEG_INFINITY));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
+        let e = Point::try_from(NaPoint2::new(f64::NAN, 0.0)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::try_from(NaPoint2::new(f64::INFINITY, 0.0)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::try_from(NaPoint2::new(f64::NEG_INFINITY, 0.0)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::try_from(NaPoint2::new(0.0, f64::NAN)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::try_from(NaPoint2::new(0.0, f64::INFINITY)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Point::try_from(NaPoint2::new(0.0, f64::NEG_INFINITY)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
     }
 
     #[test]

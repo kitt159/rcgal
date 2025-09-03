@@ -24,13 +24,13 @@ impl Vector {
 
     /// Returns the length of the vector.
     pub fn norm(&self) -> Result<f64, RcgalError> {
-        let norm = self.inner.x.hypot(self.inner.y);
+        let norm = self.x().hypot(self.y());
         norm.is_finite().then_some(norm).ok_or(RcgalError::Overflow)
     }
 
     /// Returns unit vector with the same direction.
     pub fn normalize(&self) -> Result<Self, RcgalError> {
-        let max_comp = self.inner.x.abs().max(self.inner.y.abs());
+        let max_comp = self.x().abs().max(self.y().abs());
         if !max_comp.is_normal() {
             return Err(RcgalError::InvalidInput);
         }
@@ -81,19 +81,18 @@ mod tests {
 
     #[test]
     fn vector_2d_invalid_arguments() {
-        let e = RcgalError::NotFiniteInput;
-        let v = Vector::new(f64::NAN, 0.0);
-        assert_eq!(v.unwrap_err(), e);
-        let v = Vector::new(f64::INFINITY, 0.0);
-        assert_eq!(v.unwrap_err(), e);
-        let v = Vector::new(f64::NEG_INFINITY, 0.0);
-        assert_eq!(v.unwrap_err(), e);
-        let v = Vector::new(0.0, f64::NAN);
-        assert_eq!(v.unwrap_err(), e);
-        let v = Vector::new(0.0, f64::INFINITY);
-        assert_eq!(v.unwrap_err(), e);
-        let v = Vector::new(0.0, f64::NEG_INFINITY);
-        assert_eq!(v.unwrap_err(), e);
+        let e = Vector::new(f64::NAN, 0.0).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::new(f64::INFINITY, 0.0).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::new(f64::NEG_INFINITY, 0.0).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::new(0.0, f64::NAN).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::new(0.0, f64::INFINITY).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::new(0.0, f64::NEG_INFINITY).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
     }
 
     #[test]
@@ -108,18 +107,18 @@ mod tests {
 
     #[test]
     fn from_nalgebra_invalid_arguments() {
-        let p = Vector::try_from(NaVec2::new(f64::NAN, 0.0));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Vector::try_from(NaVec2::new(f64::INFINITY, 0.0));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Vector::try_from(NaVec2::new(f64::NEG_INFINITY, 0.0));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Vector::try_from(NaVec2::new(0.0, f64::NAN));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Vector::try_from(NaVec2::new(0.0, f64::INFINITY));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
-        let p = Vector::try_from(NaVec2::new(0.0, f64::NEG_INFINITY));
-        assert_eq!(p.unwrap_err(), RcgalError::NotFiniteInput);
+        let e = Vector::try_from(NaVec2::new(f64::NAN, 0.0)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::try_from(NaVec2::new(f64::INFINITY, 0.0)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::try_from(NaVec2::new(f64::NEG_INFINITY, 0.0)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::try_from(NaVec2::new(0.0, f64::NAN)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::try_from(NaVec2::new(0.0, f64::INFINITY)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
+        let e = Vector::try_from(NaVec2::new(0.0, f64::NEG_INFINITY)).unwrap_err();
+        assert_eq!(e, RcgalError::NotFiniteInput);
     }
 
     #[test]
