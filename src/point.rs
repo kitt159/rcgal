@@ -4,11 +4,15 @@ use std::num::FpCategory;
 /// Structure representing a 2D point.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Point {
+    /// INVARIANT: x and y are finite
     inner: NaPoint2,
 }
 
 impl Point {
     /// Creates a new 2D point from x and y coordinates.
+    ///
+    /// # Errors
+    /// Returns `NotFiniteInput` if the coordinates are infinite or NaN.
     pub fn new(x: f64, y: f64) -> Result<Self, RcgalError> {
         NaPoint2::new(x, y).try_into()
     }
@@ -24,6 +28,9 @@ impl Point {
     }
 
     /// Returns the distance between two points.
+    ///
+    /// # Errors
+    /// Returns `Overflow` if the distance is bigger than `f64::MAX`.
     pub fn dist(&self, other: &Self) -> Result<f64, RcgalError> {
         let diff = self.inner - other.inner;
         let dist = diff.x.hypot(diff.y);

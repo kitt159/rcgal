@@ -4,11 +4,15 @@ use std::num::FpCategory;
 /// Structure representing a 2D vector.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Vector {
+    /// INVARIANT: x and y are finite
     inner: NaVec2,
 }
 
 impl Vector {
     /// Creates a new 2D vector from x and y coordinates.
+    ///
+    /// # Errors
+    /// Returns `NotFiniteInput` if the coordinates are infinite or NaN.
     pub fn new(x: f64, y: f64) -> Result<Self, RcgalError> {
         NaVec2::new(x, y).try_into()
     }
@@ -24,6 +28,9 @@ impl Vector {
     }
 
     /// Returns the length of the vector.
+    ///
+    /// # Errors
+    /// Returns `Overflow` if the norm is bigger than `f64::MAX`.
     pub fn norm(&self) -> Result<f64, RcgalError> {
         let norm = self.x().hypot(self.y());
         match norm.classify() {
@@ -34,6 +41,9 @@ impl Vector {
     }
 
     /// Returns unit vector with the same direction.
+    ///
+    /// # Errors
+    /// Returns `InvalidInput` if all components of the vector are subnormal.
     pub fn normalize(&self) -> Result<Self, RcgalError> {
         let max_comp = self.x().abs().max(self.y().abs());
         let v_scaled = match max_comp.classify() {
