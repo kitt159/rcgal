@@ -1,10 +1,12 @@
 //! # RCGAL
 
 mod error;
+mod line;
 mod point;
 mod vector;
 
 pub use error::RcgalError;
+pub use line::Line;
 pub use point::Point;
 pub use vector::Vector;
 
