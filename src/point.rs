@@ -1,4 +1,5 @@
 use crate::RcgalError;
+use std::num::FpCategory;
 
 /// Structure representing a 2D point.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -26,7 +27,11 @@ impl Point {
     pub fn dist(&self, other: &Self) -> Result<f64, RcgalError> {
         let diff = self.inner - other.inner;
         let dist = diff.x.hypot(diff.y);
-        dist.is_finite().then_some(dist).ok_or(RcgalError::Overflow)
+        match dist.classify() {
+            FpCategory::Zero | FpCategory::Normal | FpCategory::Subnormal => Ok(dist),
+            FpCategory::Infinite => Err(RcgalError::Overflow),
+            FpCategory::Nan => unreachable!("dist calculation should not return NaN"),
+        }
     }
 }
 
