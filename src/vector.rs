@@ -27,6 +27,23 @@ impl Vector {
         let norm = self.inner.x.hypot(self.inner.y);
         norm.is_finite().then_some(norm).ok_or(RcgalError::Overflow)
     }
+
+    /// Returns unit vector with the same direction.
+    pub fn normalize(&self) -> Result<Self, RcgalError> {
+        let max_comp = self.inner.x.abs().max(self.inner.y.abs());
+        if !max_comp.is_normal() {
+            return Err(RcgalError::InvalidInput);
+        }
+        let self_scaled = Self {
+            inner: self.inner / max_comp,
+        };
+        let norm = self_scaled
+            .norm()
+            .expect("scaled vector should have valid norm");
+        Ok(Self {
+            inner: self_scaled.inner / norm,
+        })
+    }
 }
 
 pub(crate) type NaVec2 = nalgebra::Vector2<f64>;
@@ -147,5 +164,65 @@ mod tests {
     fn vector_2d_norm_overflow() {
         let v = Vector::new(f64::MAX, f64::MAX).unwrap();
         assert_eq!(v.norm().unwrap_err(), RcgalError::Overflow);
+    }
+
+    #[test]
+    fn vector_2d_normalize_simple() {
+        let v = Vector::new(1.0, 1.0).unwrap().normalize().unwrap();
+        rel_eq!(v.x(), 1.0 / C::SQRT_2);
+        rel_eq!(v.y(), 1.0 / C::SQRT_2);
+    }
+
+    #[test]
+    fn vector_2d_normalize_big() {
+        let v = Vector::new(f64::MAX, f64::MAX)
+            .unwrap()
+            .normalize()
+            .unwrap();
+        rel_eq!(v.x(), 1.0 / C::SQRT_2);
+        rel_eq!(v.y(), 1.0 / C::SQRT_2);
+        let v = Vector::new(0.6 * f64::MAX, 0.8 * f64::MAX)
+            .unwrap()
+            .normalize()
+            .unwrap();
+        rel_eq!(v.x(), 3.0 / 5.0);
+        rel_eq!(v.y(), 4.0 / 5.0);
+    }
+
+    #[test]
+    fn vector_2d_normalize_small() {
+        let v = Vector::new(f64::MIN_POSITIVE, f64::MIN_POSITIVE)
+            .unwrap()
+            .normalize()
+            .unwrap();
+        rel_eq!(v.x(), 1.0 / C::SQRT_2);
+        rel_eq!(v.y(), 1.0 / C::SQRT_2);
+        let v = Vector::new(f64::MIN_POSITIVE, 0.0)
+            .unwrap()
+            .normalize()
+            .unwrap();
+        rel_eq!(v.x(), 1.0);
+        rel_eq!(v.y(), 0.0);
+        let v = Vector::new(0.0, f64::MIN_POSITIVE)
+            .unwrap()
+            .normalize()
+            .unwrap();
+        rel_eq!(v.x(), 0.0);
+        rel_eq!(v.y(), 1.0);
+        let v = Vector::new(f64::MIN_POSITIVE.next_down(), f64::MIN_POSITIVE.next_down())
+            .unwrap()
+            .normalize()
+            .unwrap_err();
+        assert_eq!(v, RcgalError::InvalidInput);
+        let v = Vector::new(f64::MIN_POSITIVE.next_down(), 0.0)
+            .unwrap()
+            .normalize()
+            .unwrap_err();
+        assert_eq!(v, RcgalError::InvalidInput);
+        let v = Vector::new(0.0, f64::MIN_POSITIVE.next_down())
+            .unwrap()
+            .normalize()
+            .unwrap_err();
+        assert_eq!(v, RcgalError::InvalidInput);
     }
 }
