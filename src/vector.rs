@@ -36,18 +36,18 @@ impl Vector {
     /// Returns unit vector with the same direction.
     pub fn normalize(&self) -> Result<Self, RcgalError> {
         let max_comp = self.x().abs().max(self.y().abs());
-        if !max_comp.is_normal() {
-            return Err(RcgalError::InvalidInput);
-        }
-        let self_scaled = Self {
-            inner: self.inner / max_comp,
+        let v_scaled = match max_comp.classify() {
+            FpCategory::Zero | FpCategory::Subnormal => return Err(RcgalError::InvalidInput),
+            FpCategory::Normal => self.inner / max_comp,
+            FpCategory::Infinite | FpCategory::Nan => unreachable!("max_comp should be finite"),
         };
-        let norm = self_scaled
+        let norm = Self::try_from(v_scaled)
+            .expect("scaled vector should be finite")
             .norm()
-            .expect("scaled vector should have valid norm");
-        Ok(Self {
-            inner: self_scaled.inner / norm,
-        })
+            .expect("scaled vector should have finite norm");
+        Ok((v_scaled / norm)
+            .try_into()
+            .expect("normalized vector should be finite"))
     }
 }
 
