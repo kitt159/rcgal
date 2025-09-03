@@ -4,11 +4,18 @@ use crate::{Point, RcgalError, Vector};
 #[derive(Clone, Debug, PartialEq)]
 pub struct Line {
     location: Point,
+    /// INVARIANT: unit vector
     direction: Vector,
 }
 
 impl Line {
     /// Creates a new 2D line from a location and a direction.
+    ///
+    /// # Errors
+    /// Returns `InvalidInput` if all components of direction vector are subnormal.
+    ///
+    /// Returns `NotFiniteInput` If the location or direction is not rcgal::Point or rcgal::Vector, respectively,
+    /// and the coordinates are infinite or NaN.
     pub fn new<P, V>(location: P, direction: V) -> Result<Self, RcgalError>
     where
         P: TryInto<Point>,
