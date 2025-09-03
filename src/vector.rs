@@ -1,4 +1,5 @@
 use crate::RcgalError;
+use std::num::FpCategory;
 
 /// Structure representing a 2D vector.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -25,7 +26,11 @@ impl Vector {
     /// Returns the length of the vector.
     pub fn norm(&self) -> Result<f64, RcgalError> {
         let norm = self.x().hypot(self.y());
-        norm.is_finite().then_some(norm).ok_or(RcgalError::Overflow)
+        match norm.classify() {
+            FpCategory::Zero | FpCategory::Normal | FpCategory::Subnormal => Ok(norm),
+            FpCategory::Infinite => Err(RcgalError::Overflow),
+            FpCategory::Nan => unreachable!("norm calculation should not return NaN"),
+        }
     }
 
     /// Returns unit vector with the same direction.
